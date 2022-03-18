@@ -1,0 +1,18 @@
+{
+  "restults": [
+    {
+      "user": 1,
+      "timeOfArrival": 1647564724969,
+      "timeOfDeparture": 1647568324969,
+      "currentSeat": 3,
+      "currentOutlets": [4, 5]
+    },
+    {
+      "user": 2,
+      "timeOfArrival": 1647564936811,
+      "timeOfDeparture": 1647572136811,
+      "currentSeat": 3,
+      "currentOutlets": [4, 5]
+    }
+  ]
+}
