@@ -1,3 +1,5 @@
+-- psql -d "postgres://oajtkeke:IM0p_J6QPp4xCEXeL8VCATYNGgM4JQ6A@salt.db.elephantsql.com/oajtkeke" -f ./server/data/coffee_shop_create.sql
+
 CREATE TABLE coffee_shops (
   _id SERIAL PRIMARY KEY,
   business_name TEXT,
