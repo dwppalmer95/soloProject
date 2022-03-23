@@ -1,51 +1,87 @@
 const path = require('path');
 const fs = require('fs');
+const db = require('../model/coffeeShopModels');
+const queries = require('./queries');
 const { join } = require('path');
 const mockDataPath = path.resolve(__dirname, '../data/mockData.json');
 
 const coffeeShopController = {};
 
 coffeeShopController.getCoffeeShop = (req, res, next) => {
-  fs.readFile(mockDataPath, 'utf-8', (err, data) => {
-    if (err) {
-      const errObj = {
-        log: `Error in coffeeShopController.getCoffeeShop. ${err}`,
-        message: 'Error getting coffee shop data. See console'
-      };
-      return next(errObj);
-    } else {
-      const parsedData = JSON.parse(data);
-      res.locals.coffeeShop = parsedData;
-      console.log(parsedData);
-      return next();
+  const params = [req.body.coffeeShopName];
+  db.query(queries.getCoffeeShopInfo, params, (queryErr, queryRes) => {
+    if (queryErr) {
+      const err = {
+        log: `Query error in getCoffeeShop: ${queryErr}`,
+        status: 400,
+        message: 'A query error occured. See console.', 
+      }
+      return next(err);
     }
-  })
+
+    const coffeeShop = queryRes.rows[0];
+    res.locals.coffeeShop = coffeeShop;
+    return next();
+  });
 }
 
-coffeeShopController.postCoffeeShop = (req, res, next) => {
-  
-  const dataStructure = {
-    "user": null,
-    "timeOfArrival": null,
-    "timeOfDeparture": null,
-    "currentSeat": null,
-    "currentOutlets": null
-  };
+coffeeShopController.postCoffeeShopInfo = (req, res, next) => {
+  const newCoffeeShop = req.body;
+  const params = [
+    newCoffeeShop.name,
+    newCoffeeShop.wifiDownload,
+    newCoffeeShop.wifiUpload,
+    newCoffeeShop.streetAddress,
+    newCoffeeShop.zipCode
+  ];
 
-  const newData = {
-    ...req.body
-  };
-
-  fs.appendFile(mockDataPath, JSON.stringify(newData), (err) => {
-    if (err) {
-      const errObj = {
-        log: `Error in coffeeShopController.postCoffeeShop. ${err}`,
-        message: 'Error posting coffee shop data. See console'
-      };
-      return next(errObj);
+  db.query(queries.postCoffeeShopInfo, params, (queryErr, queryRes) => {
+    if (queryErr) {
+      const err = {
+        log: `Query error in postCoffeeShop: ${queryErr}`,
+        status: 400,
+        message: 'A query error occured. See console.', 
+      }
+      return next(err);
     }
+
+    console.log(queryRes);
+    res.locals.coffeeShop = params;
     return next();
-  })
+  });
+}
+  
+coffeeShopController.postNewCustomerInfo = (req, res, next) => {
+  const dateString = req.body.dateString;
+  const departureTimeUtc = req.body.departureTimeUtc;
+  const {seatId, outletId} = req.body;
+  const departureTime = Date.parse(`${dateString} ${departureTimeUtc}`)
+
+  const params = [
+    seatId,
+    outletId,
+    departureTime
+  ];
+
+  db.query(queries.postNewCustomerInfo, params, (queryErr, queryRes) => {
+    if (queryErr) {
+      const err = {
+        log: `Query error in postNewCustomerData: ${queryErr}`,
+        status: 400,
+        message: 'A query error occured. See console.', 
+      }
+      return next(err);
+    }
+
+    const output = {
+      seatId,
+      outletId,
+      departureTime
+    };
+
+    res.locals.newCustomer = output;
+    return next();
+  });
 }
 
 

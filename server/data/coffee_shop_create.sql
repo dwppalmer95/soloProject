@@ -37,22 +37,22 @@ CREATE TABLE customers (
 );
 
 INSERT INTO coffee_shops 
-  (_id, business_name, avg_wifi_download_mbps, avg_wifi_upload_mbps, 
+  (business_name, avg_wifi_download_mbps, avg_wifi_upload_mbps, 
     street_address, zip_code) 
-  VALUES (1, 'The Bean', 1.55, 11.7, 
+  VALUES ('The Bean', 1.55, 11.7, 
     '54 2nd Ave', 10003);
 
-INSERT INTO tables (_id, coffee_shop_id) VALUES (1, 1);
+INSERT INTO tables (coffee_shop_id) VALUES (1);
 
-INSERT INTO seats (_id, table_id) VALUES (1, 1);
-INSERT INTO seats (_id, table_id) VALUES (2, 1);
-INSERT INTO seats (_id, table_id) VALUES (3, 1);
+INSERT INTO seats (table_id) VALUES (1);
+INSERT INTO seats (table_id) VALUES (1);
+INSERT INTO seats (table_id) VALUES (1);
 
-INSERT INTO outlets (_id, table_id) VALUES (1, 1);
-INSERT INTO outlets (_id, table_id) VALUES (2, 1);
-INSERT INTO outlets (_id, table_id) VALUES (3, 1);
-INSERT INTO outlets (_id) VALUES (4);
-INSERT INTO outlets (_id) VALUES (5);
+INSERT INTO outlets (table_id) VALUES (1);
+INSERT INTO outlets (table_id) VALUES (1);
+INSERT INTO outlets (table_id) VALUES (1);
+INSERT INTO outlets DEFAULT VALUES;
+INSERT INTO outlets DEFAULT VALUES;
 
 INSERT INTO customers (_id, seat_id, outlet_id, departure_time)
   VALUES (1, 2, 1, 1647915874572);
