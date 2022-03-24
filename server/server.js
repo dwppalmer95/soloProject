@@ -7,6 +7,8 @@ const PORT = 3000;
 
 app.use(express.json());
 
+app.use('/build', express.static(path.join(__dirname, '../build')));
+
 app.get('/', (req, res, next) => {
 
   const fileName = path.resolve(__dirname, '../client/index.html');

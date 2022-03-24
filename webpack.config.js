@@ -6,11 +6,10 @@ module.exports = {
     path: path.resolve(__dirname, 'build'),
     filename: 'bundle.js'
   },
-  mode: 'production',
   module: {
     rules: [
       {
-        test: /\.js?x/,
+        test: /\.jsx?/,
         exclude: path.resolve(__dirname, 'node_modules'),
         use: {
           loader: 'babel-loader',
@@ -21,7 +20,14 @@ module.exports = {
             ]
           }
         }
-      }
+      },
+      {
+        test: /\.css$/i,
+        use: [ 
+          "style-loader",
+          "css-loader",
+        ]
+    }
     ]
   }
 }
