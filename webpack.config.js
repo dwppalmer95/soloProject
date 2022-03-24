@@ -1,3 +1,8 @@
+/* HELPFUL WEBPACK SETUP RESOURCES (note some options in the example may be depricated or have changed):
+https://linguinecode.com/post/how-to-setup-webpack-dev-server-react-babel
+https://dev.to/riddhiagrawal001/create-react-app-without-create-react-app-2lgd
+*/
+
 const path = require('path');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
