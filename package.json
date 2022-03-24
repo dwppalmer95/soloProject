@@ -23,6 +23,7 @@
   },
   "scripts": {
     "start": "nodemon server/server.js",
-    "build": "webpack --config webpack.config.js --mode production"
+    "build": "webpack --config webpack.config.js --mode production",
+    "dev": "webpack serve --config webpack.config.js --mode development  --hot --open"
   }
 }

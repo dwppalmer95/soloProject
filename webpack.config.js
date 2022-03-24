@@ -1,12 +1,29 @@
 const path = require('path');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   entry: './client/index.js',
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
   },
+  devServer: {
+    static: {
+      directory: path.join(__dirname, './client'),
+      publicPath: '/',
+    },
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      // this injects a script tag in the html
+      // in production, we can manually write <script src="build/bundle.js"></script>
+      // but in development, we're not using express so that won't work
+      inject: true,
+      template: path.resolve(__dirname, 'client/index.html'),
+    }),
+  ],
   module: {
+    
     rules: [
       {
         test: /\.jsx?/,
