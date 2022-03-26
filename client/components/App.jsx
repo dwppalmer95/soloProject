@@ -62,12 +62,12 @@ class App extends Component {
       <div>
         <h1>Select coffee shop</h1>
 
-        <h1>Enter new coffee shop</h1>
-        <InputBox type='text' formName='Name' value={this.state.newCoffeeShop.name} name='name' onChange={this.onChange}/>
-        <InputBox type='number' formName='Wifi Download Speed (mbps)' value={this.state.wifiDownload} name='wifiDownload' onChange={this.onChange}/>
-        <InputBox type='number' formName='Wifi Upload Speed (mbps)' entryValue={this.state.wifiUpload} name='wifiUpload' onChange={this.onChange}/>
-        <InputBox type='text' formName='Street Address' entryValue={this.state.streetAddress} name='streetAddress' onChange={this.onChange}/>
-        <InputBox type='number' formName='Zip Code' entryValue={this.state.zipCode} name='zipCode' onChange={this.onChange}/>
+        <h1 class='Title'>Enter new coffee shop</h1>
+        <InputBox placeholder='Name' value={this.state.newCoffeeShop.name} name='name' onChange={this.onChange}/>
+        <InputBox placeholder='Wifi Download Speed (mbps)' value={this.state.wifiDownload} name='wifiDownload' onChange={this.onChange}/>
+        <InputBox placeholder='Wifi Upload Speed (mbps)' entryValue={this.state.wifiUpload} name='wifiUpload' onChange={this.onChange}/>
+        <InputBox placeholder='Street Address' entryValue={this.state.streetAddress} name='streetAddress' onChange={this.onChange}/>
+        <InputBox placeholder='Zip Code' entryValue={this.state.zipCode} name='zipCode' onChange={this.onChange}/>
         <button onClick={this.onCoffeeShopSubmit}>Add coffee shop</button>
       </div>
     );
@@ -76,13 +76,11 @@ class App extends Component {
 
 const InputBox = props => {
   return (
-  <form>
-    <label>
-      {`${props.formName}: `}
-      <input type={props.type} value={props.value} onChange={e => props.onChange(props.name, e.target.value)}
-        name={props.name}/>
-    </label>
-  </form>
+  <div class='Input'>
+    <input id='input' type='text' class='Input-text' placeholder={props.placeholder} value={props.value} onChange={e => props.onChange(props.name, e.target.value)}
+      name={props.name}/>
+    <label for='input' class='Input-label'>spacing</label>
+  </div>
 )};
 
 // const DropDownList = props => {
