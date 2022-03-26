@@ -8,7 +8,7 @@ class App extends Component {
         name: '',
         wifiDownload: 0,
         wifiUpload: 0,
-        streetAddress: 0,
+        streetAddress: '',
         zipCode: 0
       }
     }
@@ -20,29 +20,36 @@ class App extends Component {
     const newCoffeeShop = {...this.state.newCoffeeShop};
     newCoffeeShop[coffeeShopPropName] = value;
     this.setState({newCoffeeShop});
-    console.log(this.state);
   }
 
   onCoffeeShopSubmit = () => {
-    const newCoffeeShop = {...this.state.newCoffeeShop};
+    const data = {...this.state.newCoffeeShop};
     const options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(newCoffeeShop)
+      body: JSON.stringify(data)
     }
-    console.log(options);
     fetch('/coffeeShop', options)
       .then((res) => {
         if (!res.ok) {
           throw new Error(`HTTP error posting coffee shop data. Status: ${ res.status }`)
         }
         console.log(res);
-        for (const property in newCoffeeShop) {
-          newCoffeeShop[property] = '';
+        var newCoffeeShop = {
+          name: '',
+          wifiDownload: 0,
+          wifiUpload: 0,
+          streetAddress: 0,
+          zipCode: 0
         }
-        this.setState({newCoffeeShop});
+        this.setState({
+          ...this.state,
+          newCoffeeShop
+        });
+        this.forceUpdate();
+        console.log(this.state);
       })
       .catch(e => {
         console.log(e);
@@ -53,10 +60,12 @@ class App extends Component {
   render() {
     return (
       <div>
+        <h1>Select coffee shop</h1>
+
         <h1>Enter new coffee shop</h1>
         <InputBox type='text' formName='Name' value={this.state.newCoffeeShop.name} name='name' onChange={this.onChange}/>
-        <InputBox type='number' formName='Wifi Download Speed (mbps)' value={this.state.wifiDownloadMbps} name='wifiDownloadMbps' onChange={this.onChange}/>
-        <InputBox type='number' formName='Wifi Upload Speed (mbps)' entryValue={this.state.wifiUploadMbps} name='wifiUploadMbps' onChange={this.onChange}/>
+        <InputBox type='number' formName='Wifi Download Speed (mbps)' value={this.state.wifiDownload} name='wifiDownload' onChange={this.onChange}/>
+        <InputBox type='number' formName='Wifi Upload Speed (mbps)' entryValue={this.state.wifiUpload} name='wifiUpload' onChange={this.onChange}/>
         <InputBox type='text' formName='Street Address' entryValue={this.state.streetAddress} name='streetAddress' onChange={this.onChange}/>
         <InputBox type='number' formName='Zip Code' entryValue={this.state.zipCode} name='zipCode' onChange={this.onChange}/>
         <button onClick={this.onCoffeeShopSubmit}>Add coffee shop</button>
@@ -75,5 +84,11 @@ const InputBox = props => {
     </label>
   </form>
 )};
+
+// const DropDownList = props => {
+//   return (
+
+//   )
+// }
 
 export default App;
