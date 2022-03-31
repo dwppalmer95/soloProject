@@ -17,19 +17,8 @@ module.exports = {
       directory: path.join(__dirname, './client'),
       publicPath: '/',
     },
-    setupMiddlewares: (middlewares, devServer) => {
-      if (!devServer) throw new Error('webpack-dev-server undefined');
-
-      devServer.app.get('/coffeeShop', (_, response) => {
-        response.send('setup-middlewares option GET');
-      });
-
-      
-      devServer.app.post('/coffeeShop', (_, response) => {
-        response.send('setup-middlewares option POST');
-      });
-
-      return middlewares;
+    proxy: {
+      '/coffeeShop': 'http://localhost:3000/'
     },
   },
   plugins: [

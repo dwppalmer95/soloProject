@@ -8,7 +8,8 @@ const mockDataPath = path.resolve(__dirname, '../data/mockData.json');
 const coffeeShopController = {};
 
 coffeeShopController.getCoffeeShop = (req, res, next) => {
-  const params = [req.body.coffeeShopName];
+  console.log(req.query);
+  const params = [req.query.coffeeShopName];
   db.query(queries.getCoffeeShopInfo, params, (queryErr, queryRes) => {
     if (queryErr) {
       const err = {
