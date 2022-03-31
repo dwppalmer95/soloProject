@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 
 class App extends Component {
   constructor(props) {
@@ -20,20 +20,11 @@ class App extends Component {
         zipCode: 0
       }
     }
-    this.onChangeNewCoffeeShop  = this.onChangeNewCoffeeShop.bind(this);
     this.postCoffeeShop = this.postCoffeeShop.bind(this);
   }
 
-  onChangeNewCoffeeShop = (coffeeShopPropName, value) => {
-    const newCoffeeShop = {...this.state.newCoffeeShop};
-    newCoffeeShop[coffeeShopPropName] = value;
-    this.setState({
-      ...this.state,
-      newCoffeeShop
-    });
-  }
-
-  onChange = (_, value) => {
+  onChange = (event) => {
+    const value = event.target.value;
     const coffeeShopToSearch = value;
     this.setState({
       ...this.state,
@@ -134,22 +125,51 @@ class App extends Component {
         <InputBox placeholder='Coffee Shop Name' value={this.state.coffeeShopToSearch} name='coffeeShopToSearch' onChange={this.onChange}/>
         <button onClick={this.getCoffeeShop}>Search for coffee shop</button>
         <InfoDisplay title='Coffee Shop Name' detail={this.state.displayCoffeeShop.name}/>
-        <h1 className='Title'>Enter new coffee shop</h1>
-        <InputBox placeholder='Name' value={this.state.newCoffeeShop.name} name='name' onChange={this.onChangeNewCoffeeShop}/>
-        <InputBox placeholder='Wifi Download Speed (mbps)' value={this.state.newCoffeeShop.wifiDownload} name='wifiDownload' onChange={this.onChangeNewCoffeeShop}/>
-        <InputBox placeholder='Wifi Upload Speed (mbps)' entryValue={this.state.newCoffeeShop.wifiUpload} name='wifiUpload' onChange={this.onChangeNewCoffeeShop}/>
-        <InputBox placeholder='Street Address' entryValue={this.state.newCoffeeShop.streetAddress} name='streetAddress' onChange={this.onChangeNewCoffeeShop}/>
-        <InputBox placeholder='Zip Code' entryValue={this.state.newCoffeeShop.zipCode} name='zipCode' onChange={this.onChangeNewCoffeeShop}/>
-        <button onClick={this.postCoffeeShop}>Add coffee shop</button>
+        <NewCoffeeShopInput postCoffeeShop={this.postCoffeeShop}/>
       </div>
     );
   }
 };
 
+const NewCoffeeShopInput = (props) => {
+
+  const defaultCoffeeShop = {
+    name: '',
+    wifiDownload: '',
+    wifiUpload: '',
+    streetAddress: '',
+    zipCode: ''
+  };
+  const coffeeShopProperties = Object.getOwnPropertyNames(defaultCoffeeShop);
+  const [newCoffeeShop, setNewCoffeeShop] = useState(defaultCoffeeShop);
+
+  const onChange = (event) => {
+    const property = event.target.name;
+    const value = event.target.value;
+
+    const updatedNewCoffeeShop = {...newCoffeeShop};
+    updatedNewCoffeeShop[property] = value;
+    
+    setNewCoffeeShop(updatedNewCoffeeShop);
+  };
+
+  return (
+    <div>
+      <h1 className='Title'>Enter new coffee shop</h1>
+      <InputBox placeholder='Name' value={newCoffeeShop.name} onChange={onChange} name={coffeeShopProperties[0]}/>
+      <InputBox placeholder='Wifi Download Speed (mbps)' value={newCoffeeShop.wifiDownload} onChange={onChange} name={coffeeShopProperties[1]}/>
+      <InputBox placeholder='Wifi Upload Speed (mbps)' value={newCoffeeShop.wifiUpload} onChange={onChange} name={coffeeShopProperties[2]}/>
+      <InputBox placeholder='Street Address' value={newCoffeeShop.streetAddress} onChange={onChange} name={coffeeShopProperties[3]}/>
+      <InputBox placeholder='Zip Code' value={newCoffeeShop.zipCode} onChange={onChange} name={coffeeShopProperties[4]}/>
+      <button onClick={props.postCoffeeShop}>Add coffee shop</button>
+    </div>
+  );
+};
+
 const InputBox = props => {
   return (
   <div className='Input'>
-    <input id='input' type='text' className='Input-text' placeholder={props.placeholder} value={props.value} onChange={e => props.onChange(props.name, e.target.value)}
+    <input id='input' type='text' className='Input-text' placeholder={props.placeholder} value={props.value} onChange={props.onChange}
       name={props.name}/>
     <label htmlFor='input' className='Input-label'>spacing</label>
   </div>
@@ -162,12 +182,6 @@ const InfoDisplay = props => {
       <dd>{props.detail}</dd>
   </dl>
   );
-}
-
-// const DropDownList = props => {
-//   return (
-
-//   )
-// }
+};
 
 export default App;
